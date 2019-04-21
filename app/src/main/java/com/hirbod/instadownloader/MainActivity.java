@@ -158,8 +158,26 @@ public class MainActivity extends Activity {
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setCancelable(false);
         mAlertDialog = new AlertDialog.Builder(this);
-    }
+        //Check share
+        {
+            // Get intent, action and MIME type
+            Intent intent = getIntent();
+            String action = intent.getAction();
+            String type = intent.getType();
 
+            if (Intent.ACTION_SEND.equals(action) && type != null) {
+                if ("text/plain".equals(type)) {
+                    handleSendText(intent); // Handle text being sent
+                }
+            }
+        }
+    }
+    void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            ((EditText) findViewById(R.id.ShareURLEditText)).setText(sharedText);
+        }
+    }
     private void DownloadFile() {
         //Values
         if(!isOnline()){

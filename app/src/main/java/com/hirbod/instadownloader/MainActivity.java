@@ -124,12 +124,8 @@ public class MainActivity extends Activity {
             if(!b){
                 new AlertDialog.Builder(this)
                         .setTitle("Error")
-                        .setMessage("Cannot create \"InstaDownloader\" directory in external memory.")
-                        .setPositiveButton("Close App", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                MainActivity.this.finish();
-                            }
-                        })
+                        .setMessage("Cannot create \"InstaDownloader\" directory in external memory.\nThis may cause problems later.")
+                        .setPositiveButton("OK", null)
                         .setIcon(R.drawable.ic_warning_24dp)
                         .show();
 
@@ -141,23 +137,12 @@ public class MainActivity extends Activity {
         if(!b || !b1){
             new AlertDialog.Builder(this)
                     .setTitle("Error")
-                    .setMessage("We have some difficulties writing in external memory.\nCheck your permissions...")
-                    .setPositiveButton("Close App", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            MainActivity.this.finish();
-                        }
-                    })
+                    .setMessage("We have some difficulties writing in external memory.\nCheck your permissions. If storage permission is off you need to turn that on.")
+                    .setPositiveButton("Close",null)
                     .setIcon(R.drawable.ic_warning_24dp)
                     .show();
 
         }
-        //
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("Downloading, Please Wait...");
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setCancelable(false);
-        mAlertDialog = new AlertDialog.Builder(this);
         //Check share
         {
             // Get intent, action and MIME type
@@ -171,6 +156,12 @@ public class MainActivity extends Activity {
                 }
             }
         }
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Downloading, Please Wait...");
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setCancelable(false);
+        mAlertDialog = new AlertDialog.Builder(this);
     }
     void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -538,12 +529,8 @@ public class MainActivity extends Activity {
 
                 new AlertDialog.Builder(this)
                         .setTitle("Error")
-                        .setMessage("Cannot create \"InstaDownloader\" directory in external memory.")
-                        .setPositiveButton("Close App", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                MainActivity.this.finish();
-                            }
-                        })
+                        .setMessage("Cannot create \"InstaDownloader\" directory in external memory.\nThis may cause problems later.")
+                        .setPositiveButton("Close App", null)
                         .setIcon(R.drawable.ic_warning_24dp)
                         .show();
             }
@@ -553,7 +540,7 @@ public class MainActivity extends Activity {
         for(int i = 0;i<split.length;i++)
             if(split[i].equals("p"))
                 return split[i+1];
-        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12345678790";
         StringBuilder sb = new StringBuilder();
         Random rnd = new Random();
         for(int i = 0;i<10;i++)

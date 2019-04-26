@@ -502,7 +502,7 @@ public class MainActivity extends Activity {
     private void Help_Dialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Help")
-                .setMessage("Open a post and tap on three dots and choose \"Copy Share URL\".Then, paste the URL here.")
+                .setMessage("On Instagram go to a post and select three dots on top right of a post. Then click on \"Share Link...\" and choose InstaDownloader from list.\nOr\nOpen a post and tap on three dots and choose \"Copy Share URL\".Then, paste the URL here.")
                 .setIcon(R.drawable.ic_help_24dp)
                 .setPositiveButton("OK", null)
                 .setNegativeButton("Learn More",new DialogInterface.OnClickListener() {

@@ -80,6 +80,12 @@ public class MainActivity extends Activity {
                         .setTitle("About")
                         .setMessage("Developed by Hirbod Behnam\nWith Android Studio & Java\n" + "Version " + vn + " Build Version: " + vc)
                         .setPositiveButton("OK",null)
+                        .setNegativeButton("Source Code", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/HirbodBehnam/InstaDownloader")));
+                            }
+                        })
                         .show();
             }
         });
@@ -106,15 +112,12 @@ public class MainActivity extends Activity {
                     != PackageManager.PERMISSION_GRANTED) {
 
                 // Should we show an explanation?
-                if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
+                if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                     Toast.makeText(this, "The writing permission is needed to download and save photos.", Toast.LENGTH_LONG).show();
-
-                } else {
+                else
                     requestPermissions(
                             new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                             1);
-                }
             }
         }
 

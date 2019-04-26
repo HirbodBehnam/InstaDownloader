@@ -134,15 +134,21 @@ public class MainActivity extends Activity {
         //Test permission
         boolean b = new File(Environment.getExternalStorageDirectory() + "/InstaDownloader1").mkdir();
         boolean b1 = new File(Environment.getExternalStorageDirectory() + "/InstaDownloader1").delete();
-        if(!b || !b1){
+        if(!b || !b1) {
             new AlertDialog.Builder(this)
                     .setTitle("Error")
                     .setMessage("We have some difficulties writing in external memory.\nCheck your permissions. If storage permission is off you need to turn that on.")
-                    .setPositiveButton("Close",null)
+                    .setPositiveButton("Close", null)
                     .setIcon(R.drawable.ic_warning_24dp)
                     .show();
 
         }
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Downloading, Please Wait...");
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setCancelable(false);
+        mAlertDialog = new AlertDialog.Builder(this);
         //Check share
         {
             // Get intent, action and MIME type
@@ -156,17 +162,12 @@ public class MainActivity extends Activity {
                 }
             }
         }
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("Downloading, Please Wait...");
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setCancelable(false);
-        mAlertDialog = new AlertDialog.Builder(this);
     }
     void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
             ((EditText) findViewById(R.id.ShareURLEditText)).setText(sharedText);
+            findViewById(R.id.DownloadBTN).performClick();
         }
     }
     private void DownloadFile() {
@@ -371,8 +372,7 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
-            //Show result
+            //Every thing is done
             ((EditText) findViewById(R.id.ShareURLEditText)).setText("");
             Toast.makeText(MainActivity.this, "Download Done", Toast.LENGTH_SHORT).show();
             mProgressDialog.dismiss();
@@ -538,8 +538,9 @@ public class MainActivity extends Activity {
     }
     private static String GetNameFromURL(String[] split){
         for(int i = 0;i<split.length;i++)
-            if(split[i].equals("p"))
+            if(split[i].equals("p") && (++i) > split.length)
                 return split[i+1];
+        //If not found we are going to create a random name
         String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12345678790";
         StringBuilder sb = new StringBuilder();
         Random rnd = new Random();

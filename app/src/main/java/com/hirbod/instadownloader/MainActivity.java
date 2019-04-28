@@ -333,12 +333,12 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
             for(int i =0;i<fileNames.size();i++){
-                if(FileNameSave.endsWith(".jpg")){
+                if(fileNames.get(i).endsWith(".jpg")){
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                    Bitmap bitmap = BitmapFactory.decodeFile(FileNameSave, options);
+                    Bitmap bitmap = BitmapFactory.decodeFile(fileNames.get(i), options);
                     OutputStream fOut = null;
-                    File file = new File(FileNameSave);
+                    File file = new File(fileNames.get(i));
                     try {
                         fOut = new FileOutputStream(file);
                     } catch (FileNotFoundException e) {
@@ -357,7 +357,7 @@ public class MainActivity extends Activity {
                     ContentValues values = new ContentValues();
                     values.put(MediaStore.Images.Media.TITLE, "A picture");
                     values.put(MediaStore.Images.Media.DESCRIPTION, "Downloaded with Instadownloader Hirbod Behnam");
-                    values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis ());
+                    values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis () + i);
                     values.put(MediaStore.Images.ImageColumns.BUCKET_ID, file.toString().toLowerCase(Locale.US).hashCode());
                     values.put(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, file.getName().toLowerCase(Locale.US));
                     values.put("_data", file.getAbsolutePath());
@@ -365,7 +365,7 @@ public class MainActivity extends Activity {
                     ContentResolver cr = getContentResolver();
                     cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                 }else{
-                    File file = new File(FileNameSave);
+                    File file = new File(fileNames.get(i));
                     sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
                 }
             }

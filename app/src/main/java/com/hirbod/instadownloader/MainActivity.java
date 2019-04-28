@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -58,6 +59,14 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //First time check
+        {
+            SharedPreferences preferences = getSharedPreferences("MainSharedPreferences", 0);
+            if (preferences.getBoolean("FirstRun", true)) {
+                preferences.edit().putBoolean("FirstRun", false).apply();
+                Help_Dialog();
+            }
+        }
         //ETC
         findViewById(R.id.Help).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -505,7 +514,7 @@ public class MainActivity extends Activity {
     private void Help_Dialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Help")
-                .setMessage("On Instagram go to a post and select three dots on top right of a post. Then click on \"Share Link...\" and choose InstaDownloader from list.\nOr\nOpen a post and tap on three dots and choose \"Copy Share URL\".Then, paste the URL here.")
+                .setMessage("On Instagram go to a post and select three dots on top right of a post. Then click on \"Share Link...\" and choose InstaDownloader from list.\n\nOr\n\nOpen a post and tap on three dots and choose \"Copy Share URL\".Then, paste the URL here.")
                 .setIcon(R.drawable.ic_help_24dp)
                 .setPositiveButton("OK", null)
                 .setNegativeButton("Learn More",new DialogInterface.OnClickListener() {

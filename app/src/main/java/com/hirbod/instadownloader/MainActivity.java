@@ -62,10 +62,8 @@ public class MainActivity extends Activity {
         //First time check
         {
             SharedPreferences preferences = getSharedPreferences("MainSharedPreferences", 0);
-            if (preferences.getBoolean("FirstRun", true)) {
-                preferences.edit().putBoolean("FirstRun", false).apply();
+            if (preferences.getBoolean("FirstRun", true))
                 Help_Dialog();
-            }
         }
         //ETC
         findViewById(R.id.Help).setOnClickListener(new View.OnClickListener() {
@@ -163,16 +161,12 @@ public class MainActivity extends Activity {
         mAlertDialog = new AlertDialog.Builder(this);
         //Check share
         {
-            // Get intent, action and MIME type
             Intent intent = getIntent();
             String action = intent.getAction();
             String type = intent.getType();
-
-            if (Intent.ACTION_SEND.equals(action) && type != null) {
-                if ("text/plain".equals(type)) {
+            if (Intent.ACTION_SEND.equals(action) && type != null)
+                if ("text/plain".equals(type))
                     handleSendText(intent); // Handle text being sent
-                }
-            }
         }
     }
     void handleSendText(Intent intent) {
@@ -516,7 +510,13 @@ public class MainActivity extends Activity {
                 .setTitle("Help")
                 .setMessage("On Instagram go to a post and select three dots on top right of a post. Then click on \"Share Link...\" and choose InstaDownloader from list.\n\nOr\n\nOpen a post and tap on three dots and choose \"Copy Share URL\".Then, paste the URL here.")
                 .setIcon(R.drawable.ic_help_24dp)
-                .setPositiveButton("OK", null)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences preferences = getSharedPreferences("MainSharedPreferences", 0);
+                        preferences.edit().putBoolean("FirstRun", false).apply();
+                    }
+                })
                 .setNegativeButton("Learn More",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Uri uri = Uri.parse("http://ccm.net/faq/41542-how-to-copy-the-url-of-an-instagram-photo");

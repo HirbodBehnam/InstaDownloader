@@ -112,10 +112,10 @@ public class MainActivity extends Activity {
             }
         });
 
-        findViewById(R.id.SaveLocation).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.GalleryBTN).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"Files are also saved in InstaDownloader album in your gallery.",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this, GalleryActivity.class));
             }
         });
 

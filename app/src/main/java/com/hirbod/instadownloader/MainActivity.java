@@ -218,6 +218,23 @@ public class MainActivity extends Activity {
         //See DownloadFile2
     }
     private void DownloadFile2(){
+        if(WebSource.contains("<meta property=\"og:url\" content=\"")){//Check user
+            String usercheck = WebSource.substring(WebSource.indexOf("<meta property=\"og:url\" content=\"")).split(">")[0];
+            usercheck = usercheck.split("content")[1];
+            usercheck = usercheck.split("\"")[1];
+            if(usercheck.endsWith("/"))
+                usercheck = usercheck.substring(0, usercheck.length() - 1);
+            if(usercheck.split("/").length <= 4){
+                mProgressDialog.dismiss();
+                mAlertDialog
+                        .setMessage("Cannot download user profile picture.")
+                        .setTitle("Error")
+                        .setPositiveButton("OK",null)
+                        .setIcon(R.drawable.ic_warning_24dp)
+                        .show();
+                return;
+            }
+        }
         if(WebSource.contains("<script type=\"text/javascript\">window._sharedData = ")){
             String WebSource1 = WebSource;
             WebSource1 = WebSource1.substring(WebSource1.indexOf("<script type=\"text/javascript\">window._sharedData = "));

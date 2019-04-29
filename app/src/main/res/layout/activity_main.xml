@@ -58,8 +58,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Download Path : SDCard/InstaDownloader"
-        android:id="@+id/textView"
+        android:text="Download Path: SDCard/InstaDownloader"
+        android:id="@+id/SaveLocation"
         android:layout_below="@+id/Help"
         android:layout_centerHorizontal="true" />
 

@@ -543,7 +543,7 @@ public class MainActivity extends Activity {
                 })
                 .setNegativeButton("Learn More",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Uri uri = Uri.parse("http://ccm.net/faq/41542-how-to-copy-the-url-of-an-instagram-photo");
+                        Uri uri = Uri.parse("https://www.aparat.com/v/M3RnX");
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent);
                     }

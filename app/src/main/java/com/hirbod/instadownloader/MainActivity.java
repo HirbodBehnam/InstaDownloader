@@ -532,6 +532,13 @@ public class MainActivity extends Activity {
     private void Help_Dialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Help")
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        SharedPreferences preferences = getSharedPreferences("MainSharedPreferences", 0);
+                        preferences.edit().putBoolean("FirstRun", false).apply();
+                    }
+                })
                 .setMessage("On Instagram go to a post and select three dots on top right of a post. Then click on \"Share Link...\" and choose InstaDownloader from list.\n\nOr\n\nOpen a post and tap on three dots and choose \"Copy Share URL\".Then, paste the URL here.")
                 .setIcon(R.drawable.ic_help_24dp)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -543,6 +550,8 @@ public class MainActivity extends Activity {
                 })
                 .setNegativeButton("Learn More",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences preferences = getSharedPreferences("MainSharedPreferences", 0);
+                        preferences.edit().putBoolean("FirstRun", false).apply();
                         Uri uri = Uri.parse("https://www.aparat.com/v/M3RnX");
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intent);

@@ -155,7 +155,7 @@ public class MainActivity extends Activity {
             new AlertDialog.Builder(this)
                     .setTitle("Error")
                     .setMessage("We have some difficulties writing in external memory.\nCheck your permissions. If storage permission is off you need to turn that on.")
-                    .setPositiveButton("Close", null)
+                    .setPositiveButton("OK", null)
                     .setIcon(R.drawable.ic_warning_24dp)
                     .show();
 
@@ -571,11 +571,10 @@ public class MainActivity extends Activity {
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             } else {
-
                 new AlertDialog.Builder(this)
                         .setTitle("Error")
                         .setMessage("Cannot create \"InstaDownloader\" directory in external memory.\nThis may cause problems later.")
-                        .setPositiveButton("Close App", null)
+                        .setPositiveButton("OK", null)
                         .setIcon(R.drawable.ic_warning_24dp)
                         .show();
             }

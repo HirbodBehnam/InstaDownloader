@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">InstaDownloader</string>
+    <string name="internet_err">Cannot connect to internet.</string>
+    <string name="page_err">Internet connection is OK, but this page doesn\'t look like valid Instagram page.</string>
+    <string name="storage_err">We have some difficulties writing in external memory.
+        Check your permissions. If storage permission is off you need to turn that on.</string>
+    <string name="done">Download Done</string>
 </resources>

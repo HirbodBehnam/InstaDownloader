@@ -142,7 +142,7 @@ public class MainActivity extends Activity {
             if(!b){
                 new AlertDialog.Builder(this)
                         .setTitle("Error")
-                        .setMessage("Cannot create \"InstaDownloader\" directory in external memory.\nThis may cause problems later.")
+                        .setMessage(R.string.storage_err)
                         .setPositiveButton("OK", null)
                         .setIcon(R.drawable.ic_warning_24dp)
                         .show();
@@ -155,7 +155,7 @@ public class MainActivity extends Activity {
         if(!b || !b1) {
             new AlertDialog.Builder(this)
                     .setTitle("Error")
-                    .setMessage("We have some difficulties writing in external memory.\nCheck your permissions. If storage permission is off you need to turn that on.")
+                    .setMessage(R.string.storage_err)
                     .setPositiveButton("OK", null)
                     .setIcon(R.drawable.ic_warning_24dp)
                     .show();
@@ -188,7 +188,7 @@ public class MainActivity extends Activity {
         //Values
         if(!isOnline()){
             mAlertDialog
-                .setMessage("Cannot connect to internet.")
+                .setMessage(R.string.internet_err)
                 .setTitle("Error!")
                 .setPositiveButton("OK", null)
                 .setIcon(R.drawable.ic_warning_24dp)
@@ -306,7 +306,7 @@ public class MainActivity extends Activity {
                 }else{//Bullshit
                     mProgressDialog.dismiss();
                     mAlertDialog
-                            .setMessage("Internet connection is OK, but this page doesn't look like valid Instagram page.")
+                            .setMessage(R.string.page_err)
                             .setTitle("Not Valid!")
                             .setPositiveButton("OK",null)
                             .setIcon(R.drawable.ic_warning_24dp)
@@ -316,7 +316,7 @@ public class MainActivity extends Activity {
         }else{
             mProgressDialog.dismiss();
             mAlertDialog
-                    .setMessage("Internet connection is OK, but this page doesn't look like valid Instagram page.")
+                    .setMessage(R.string.page_err)
                     .setTitle("Not Valid!")
                     .setPositiveButton("OK",null)
                     .setIcon(R.drawable.ic_warning_24dp)
@@ -410,7 +410,7 @@ public class MainActivity extends Activity {
             super.onPostExecute(aVoid);
             //Every thing is done
             ((EditText) findViewById(R.id.ShareURLEditText)).setText("");
-            Toast.makeText(MainActivity.this, "Download Done", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, R.string.done, Toast.LENGTH_SHORT).show();
             mProgressDialog.dismiss();
         }
     }
@@ -526,7 +526,7 @@ public class MainActivity extends Activity {
         }
         //Show result
         ((EditText) findViewById(R.id.ShareURLEditText)).setText("");
-        Toast.makeText(this, "Download Done", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.done, Toast.LENGTH_SHORT).show();
         mProgressDialog.dismiss();
     }
     public boolean isOnline() {
@@ -579,7 +579,7 @@ public class MainActivity extends Activity {
             } else {
                 new AlertDialog.Builder(this)
                         .setTitle("Error")
-                        .setMessage("Cannot create \"InstaDownloader\" directory in external memory.\nThis may cause problems later.")
+                        .setMessage(R.string.storage_err)
                         .setPositiveButton("OK", null)
                         .setIcon(R.drawable.ic_warning_24dp)
                         .show();

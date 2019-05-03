@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -31,6 +32,7 @@ public class GalleryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
         setTitle("Downloaded Files");
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         //First time check
         {
             final SharedPreferences preferences = getSharedPreferences("MainSharedPreferences", 0);
@@ -101,5 +103,9 @@ public class GalleryActivity extends Activity {
             }
         });
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        onBackPressed();
+        return true;
+    }
 }

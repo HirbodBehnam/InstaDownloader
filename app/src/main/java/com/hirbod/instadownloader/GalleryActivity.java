@@ -19,6 +19,8 @@ import android.widget.Toast;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -55,6 +57,13 @@ public class GalleryActivity extends Activity {
         //Read files
         File folder = new File(Environment.getExternalStorageDirectory() + "/InstaDownloader");
         listOfFiles = folder.listFiles();
+
+        Arrays.sort(listOfFiles, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                return Long.valueOf(o2.lastModified()).compareTo(o1.lastModified());
+            }
+        });
 
         List<HashMap<String, String>> aList = new ArrayList<>();
 

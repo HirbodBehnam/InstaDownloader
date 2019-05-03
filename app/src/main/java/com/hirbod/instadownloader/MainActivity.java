@@ -55,6 +55,7 @@ public class MainActivity extends Activity {
     String FileNameSave = "";
     static ProgressDialog mProgressDialog;
     static AlertDialog.Builder mAlertDialog;
+    static String Description = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -235,6 +236,11 @@ public class MainActivity extends Activity {
                 return;
             }
         }
+        if(WebSource.contains("<meta property=\"og:description\"")){
+            Description = WebSource.substring(WebSource.indexOf("<meta property=\"og:description\" content=\"")).split(">")[0];
+            Description = Description.split("content")[1];
+            Description = Description.split("\"")[1];
+        }
         if(WebSource.contains("<script type=\"text/javascript\">window._sharedData = ")){
             String WebSource1 = WebSource;
             WebSource1 = WebSource1.substring(WebSource1.indexOf("<script type=\"text/javascript\">window._sharedData = "));
@@ -382,8 +388,8 @@ public class MainActivity extends Activity {
                     }
 
                     ContentValues values = new ContentValues();
-                    values.put(MediaStore.Images.Media.TITLE, "A picture");
-                    values.put(MediaStore.Images.Media.DESCRIPTION, "Downloaded with Instadownloader Hirbod Behnam");
+                    values.put(MediaStore.Images.Media.TITLE, fileNames.get(i));
+                    values.put(MediaStore.Images.Media.DESCRIPTION, Description);
                     values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis () + i);
                     values.put(MediaStore.Images.ImageColumns.BUCKET_ID, file.toString().toLowerCase(Locale.US).hashCode());
                     values.put(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, file.getName().toLowerCase(Locale.US));
@@ -505,8 +511,8 @@ public class MainActivity extends Activity {
             }
 
             ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.TITLE, "A picture");
-            values.put(MediaStore.Images.Media.DESCRIPTION, "Test");
+            values.put(MediaStore.Images.Media.TITLE, FileNameSave);
+            values.put(MediaStore.Images.Media.DESCRIPTION, Description);
             values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis ());
             values.put(MediaStore.Images.ImageColumns.BUCKET_ID, file.toString().toLowerCase(Locale.US).hashCode());
             values.put(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, file.getName().toLowerCase(Locale.US));

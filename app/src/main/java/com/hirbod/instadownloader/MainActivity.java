@@ -56,6 +56,7 @@ public class MainActivity extends Activity {
     static ProgressDialog mProgressDialog;
     static AlertDialog.Builder mAlertDialog;
     static String Description = "";
+    boolean FromShare = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,6 +181,7 @@ public class MainActivity extends Activity {
     void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
+            FromShare = true;
             ((EditText) findViewById(R.id.ShareURLEditText)).setText(sharedText);
             findViewById(R.id.DownloadBTN).performClick();
         }
@@ -412,6 +414,8 @@ public class MainActivity extends Activity {
             ((EditText) findViewById(R.id.ShareURLEditText)).setText("");
             Toast.makeText(MainActivity.this, R.string.done, Toast.LENGTH_SHORT).show();
             mProgressDialog.dismiss();
+            if(FromShare)
+                finish();
         }
     }
     private class DownloadPage extends AsyncTask<Void, Void, Void> {
@@ -528,6 +532,8 @@ public class MainActivity extends Activity {
         ((EditText) findViewById(R.id.ShareURLEditText)).setText("");
         Toast.makeText(this, R.string.done, Toast.LENGTH_SHORT).show();
         mProgressDialog.dismiss();
+        if(FromShare)
+            finish();
     }
     public boolean isOnline() {
         ConnectivityManager cm =

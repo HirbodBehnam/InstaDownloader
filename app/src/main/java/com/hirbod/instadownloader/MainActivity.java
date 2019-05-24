@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
     static AlertDialog.Builder mAlertDialog;
     static String Description = "";
     boolean FromShare = false;
+    boolean ShowRate = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +67,14 @@ public class MainActivity extends Activity {
             SharedPreferences preferences = getSharedPreferences("MainSharedPreferences", 0);
             if (preferences.getBoolean("FirstRun", true))
                 Help_Dialog();
+            //Set number of runs for rate
+            int NumberOfRun = preferences.getInt("NumberOfRun",0) + 1;
+            if(NumberOfRun != 0) {
+                if (NumberOfRun > 10)
+                    ShowRate = true;
+                else
+                    preferences.edit().putInt("NumberOfRun", NumberOfRun).apply();
+            }
         }
         //ETC
         findViewById(R.id.Help).setOnClickListener(new View.OnClickListener() {
@@ -414,7 +423,9 @@ public class MainActivity extends Activity {
             ((EditText) findViewById(R.id.ShareURLEditText)).setText("");
             Toast.makeText(MainActivity.this, R.string.done, Toast.LENGTH_SHORT).show();
             mProgressDialog.dismiss();
-            if(FromShare)
+            if(ShowRate)
+                Rate();
+            else if(FromShare)
                 finish();
         }
     }
@@ -532,7 +543,9 @@ public class MainActivity extends Activity {
         ((EditText) findViewById(R.id.ShareURLEditText)).setText("");
         Toast.makeText(this, R.string.done, Toast.LENGTH_SHORT).show();
         mProgressDialog.dismiss();
-        if(FromShare)
+        if(ShowRate)
+            Rate();
+        else if(FromShare)
             finish();
     }
     public boolean isOnline() {
@@ -540,6 +553,51 @@ public class MainActivity extends Activity {
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+    private void Rate(){
+        final SharedPreferences preferences = getSharedPreferences("MainSharedPreferences", 0);
+        new AlertDialog.Builder(this)
+                .setTitle("Rate")
+                .setMessage("If you are enjoying my app please take a moment to rate it!")
+                .setIcon(R.drawable.ic_rate_review_black_24dp)
+                .setPositiveButton("Rate", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_EDIT);
+                            intent.setData(Uri.parse("bazaar://details?id=com.hirbod.instadownloader"));
+                            intent.setPackage("com.farsitel.bazaar");
+                            startActivity(intent);
+                            preferences.edit().putInt("NumberOfRun", -1).apply();
+                        }catch (Throwable ex){
+                            AlertDialog.Builder mad = new AlertDialog.Builder(MainActivity.this);
+                            mad.setPositiveButton("Install", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cafebazaar.ir/install/"));
+                                    startActivity(browserIntent);
+                                }
+                            }).setIcon(R.drawable.ic_warning_24dp);
+                            mad.setNegativeButton("Close",null);
+                            mad.setMessage("Please install bazaar to rate!").setTitle("Error");
+                            mad.show();
+                            preferences.edit().putInt("NumberOfRun", 0).apply();
+                        }
+                    }
+                })
+                .setNeutralButton("Never", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        preferences.edit().putInt("NumberOfRun", -1).apply();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        preferences.edit().putInt("NumberOfRun", 0).apply();
+                    }
+                })
+                .show();
     }
     private void Help_Dialog() {
         new AlertDialog.Builder(this)

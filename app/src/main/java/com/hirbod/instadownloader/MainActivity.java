@@ -602,6 +602,21 @@ public class MainActivity extends Activity {
         ((EditText) findViewById(R.id.ShareURLEditText)).setText("");
         Toast.makeText(this, R.string.done, Toast.LENGTH_SHORT).show();
         mProgressDialog.dismiss();
+        if(UpdateAvailable != -1){
+            new AlertDialog.Builder(MainActivity.this)
+                    .setMessage("A new update to build version " + UpdateAvailable + " is available. Do you want to update?")
+                    .setTitle("Update Available")
+                    .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cafebazaar.ir/app/com.hirbod.instadownloader/"));
+                            MainActivity.this.startActivity(browserIntent);
+                        }
+                    })
+                    .setNegativeButton("Later", null)
+                    .show();
+            return;
+        }
         if(ShowRate)
             Rate();
         else if(FromShare)

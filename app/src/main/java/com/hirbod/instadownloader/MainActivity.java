@@ -215,7 +215,8 @@ public class MainActivity extends Activity {
         }
         WebSource ="";
         mProgressDialog.show();
-        textBox = ((EditText) findViewById(R.id.ShareURLEditText)).getText().toString().toLowerCase();
+        LinkToFile = ((EditText) findViewById(R.id.ShareURLEditText)).getText().toString();
+        textBox = LinkToFile.toLowerCase();
 
         //Give error if text box is empty or not valid
         if (textBox.matches("")) {
@@ -229,7 +230,6 @@ public class MainActivity extends Activity {
             return;
         }
         //
-        LinkToFile = ((EditText) findViewById(R.id.ShareURLEditText)).getText().toString();
         if(!(LinkToFile.startsWith("https://") || LinkToFile.startsWith("http://")))
             LinkToFile = "http://" + LinkToFile;
         DownloadPage task = new DownloadPage();

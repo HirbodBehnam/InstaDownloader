@@ -19,3 +19,6 @@ android {
         }
     }
 }
+dependencies {
+    implementation 'ir.tapsell.sdk:tapsell-sdk-android:4.3.2'
+}

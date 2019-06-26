@@ -58,6 +58,7 @@ public class MainActivity extends Activity {
     static String Description = "";
     boolean FromShare = false;
     boolean ShowRate = false;
+    static int UpdateAvailable = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,6 +186,12 @@ public class MainActivity extends Activity {
             if (Intent.ACTION_SEND.equals(action) && type != null)
                 if ("text/plain".equals(type))
                     handleSendText(intent); // Handle text being sent
+        }
+        try{
+            int version = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+            new CheckUpdates(version).execute();
+        }catch (PackageManager.NameNotFoundException ex){
+            ex.printStackTrace();
         }
     }
     void handleSendText(Intent intent) {
@@ -423,6 +430,21 @@ public class MainActivity extends Activity {
             ((EditText) findViewById(R.id.ShareURLEditText)).setText("");
             Toast.makeText(MainActivity.this, R.string.done, Toast.LENGTH_SHORT).show();
             mProgressDialog.dismiss();
+            if(UpdateAvailable != -1){
+                new AlertDialog.Builder(MainActivity.this)
+                        .setMessage("A new update to build version " + UpdateAvailable + " is available. Do you want to update?")
+                        .setTitle("Update Available")
+                        .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cafebazaar.ir/app/com.hirbod.instadownloader/"));
+                                MainActivity.this.startActivity(browserIntent);
+                            }
+                        })
+                        .setNegativeButton("Later", null)
+                        .show();
+                return;
+            }
             if(ShowRate)
                 Rate();
             else if(FromShare)
@@ -501,6 +523,43 @@ public class MainActivity extends Activity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             DONE();
+        }
+    }
+    private static class CheckUpdates extends AsyncTask<Void,Void,Integer>{
+        private int currentVersion;
+        // only retain a weak reference to the activity
+        CheckUpdates(int currentVersion) {
+            this.currentVersion = currentVersion;
+        }
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            //https://alvinalexander.com/blog/post/java/java-how-read-from-url-string-text
+            int webVersion = Integer.MIN_VALUE;
+            try
+            {
+                URL url = new URL("https://raw.githubusercontent.com/HirbodBehnam/InstaDownloader/master/app/build.gradle");
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
+                String line;
+                while ((line = bufferedReader.readLine()) != null){
+                    if(line.trim().startsWith("versionCode")){
+                        webVersion = Integer.parseInt(line.trim().split(" ")[1]);
+                        break;
+                    }
+                }
+                bufferedReader.close();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                return -1;
+            }
+            return webVersion > currentVersion ? webVersion : -1;
+        }
+
+        @Override
+        protected void onPostExecute(Integer nextVersion) {
+            super.onPostExecute(nextVersion);
+            UpdateAvailable = nextVersion;
         }
     }
     private void DONE(){

@@ -46,6 +46,13 @@ import java.util.Random;
 
 import org.json.*;
 
+import ir.tapsell.sdk.Tapsell;
+import ir.tapsell.sdk.TapsellAd;
+import ir.tapsell.sdk.TapsellAdRequestListener;
+import ir.tapsell.sdk.TapsellAdRequestOptions;
+import ir.tapsell.sdk.TapsellAdShowListener;
+import ir.tapsell.sdk.TapsellShowOptions;
+
 import static android.util.Patterns.WEB_URL;
 
 public class MainActivity extends Activity {
@@ -59,6 +66,7 @@ public class MainActivity extends Activity {
     boolean FromShare = false;
     boolean ShowRate = false;
     static int UpdateAvailable = -1;
+    static TapsellAd ad = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,6 +195,38 @@ public class MainActivity extends Activity {
                 if ("text/plain".equals(type))
                     handleSendText(intent); // Handle text being sent
         }
+        TapsellAdRequestOptions options = new TapsellAdRequestOptions();
+        Tapsell.requestAd(this, "5d13627b40878d0001359009", options, new TapsellAdRequestListener() {
+            @Override
+            public void onError (String error)
+            {
+                ad = null;
+            }
+
+            @Override
+            public void onAdAvailable (TapsellAd ad)
+            {
+                MainActivity.ad = ad;
+            }
+
+            @Override
+            public void onNoAdAvailable ()
+            {
+                ad = null;
+            }
+
+            @Override
+            public void onNoNetwork ()
+            {
+                ad = null;
+            }
+
+            @Override
+            public void onExpiring (TapsellAd ad)
+            {
+                ad = null;
+            }
+        });
         try{
             int version = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
             new CheckUpdates(version).execute();
@@ -445,9 +485,27 @@ public class MainActivity extends Activity {
                         .show();
                 return;
             }
-            if(ShowRate)
+            if(ShowRate) {
                 Rate();
-            else if(FromShare)
+                return;
+            }
+            if(ad != null){
+                ad.show(MainActivity.this, new TapsellShowOptions(), new TapsellAdShowListener() {
+                    @Override
+                    public void onOpened(TapsellAd tapsellAd) {
+
+                    }
+
+                    @Override
+                    public void onClosed(TapsellAd tapsellAd) {
+                        if(FromShare)
+                            finish();
+                        ad = null;
+                    }
+                });
+                return;
+            }
+            if(FromShare)
                 finish();
         }
     }
@@ -617,9 +675,27 @@ public class MainActivity extends Activity {
                     .show();
             return;
         }
-        if(ShowRate)
+        if(ShowRate) {
             Rate();
-        else if(FromShare)
+            return;
+        }
+        if(ad != null){
+            ad.show(MainActivity.this, new TapsellShowOptions(), new TapsellAdShowListener() {
+                @Override
+                public void onOpened(TapsellAd tapsellAd) {
+
+                }
+
+                @Override
+                public void onClosed(TapsellAd tapsellAd) {
+                    if(FromShare)
+                        finish();
+                    ad = null;
+                }
+            });
+            return;
+        }
+        if(FromShare)
             finish();
     }
     public boolean isOnline() {

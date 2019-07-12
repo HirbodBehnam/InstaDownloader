@@ -489,7 +489,7 @@ public class MainActivity extends Activity {
                 Rate();
                 return;
             }
-            if(ad != null){
+            if(ad != null && new Random().nextInt(2) == 0){
                 ad.show(MainActivity.this, new TapsellShowOptions(), new TapsellAdShowListener() {
                     @Override
                     public void onOpened(TapsellAd tapsellAd) {
@@ -679,7 +679,7 @@ public class MainActivity extends Activity {
             Rate();
             return;
         }
-        if(ad != null){
+        if(ad != null && new Random().nextInt(5) == 0){
             ad.show(MainActivity.this, new TapsellShowOptions(), new TapsellAdShowListener() {
                 @Override
                 public void onOpened(TapsellAd tapsellAd) {
@@ -739,12 +739,14 @@ public class MainActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         preferences.edit().putInt("NumberOfRun", -1).apply();
+                        ShowRate = false;
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         preferences.edit().putInt("NumberOfRun", 0).apply();
+                        ShowRate = false;
                     }
                 })
                 .show();
